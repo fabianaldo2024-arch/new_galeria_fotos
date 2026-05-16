@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rock & Groove - Media Portfolio</title>
+    <!-- Fuentes metaleras y modernas desde Google Fonts -->
+    <link href="https://googleapis.com" rel="stylesheet">
+    <link rel="stylesheet" href="/ui/css/styles.css">
+</head>
+<body>
+    <header>
+        <div class="logo-area">
+            <span class="sub-title">HEAVY AUDIOVISUALS</span>
+            <h1 class="main-title">ROCK & GROOVE</h1>
+        </div>
+    </header>
+
+    <main>
+        <!-- Panel de control estilo amplificador -->
+        <section class="amp-panel">
+            <h3 class="panel-title">// LOAD NEW MEDIA</h3>
+            <form id="uploadForm">
+                <input type="text" id="title" placeholder="TÍTULO TRACK / FOTO" required>
+                <div class="file-dropzone">
+                    <input type="file" id="fileInput" accept="image/*" required>
+                </div>
+                <button type="submit" class="burn-btn">LAUNCH EXTRACT ⚡</button>
+            </form>
+        </section>
+
+        <!-- Grilla de fotos estilo Setlist -->
+        <section class="stage-section">
+            <h2 class="section-title">LIVE SETLIST // GALLERY</h2>
+            <div class="rock-grid">
+                {% for photo in photos %}
+                <div class="rock-card">
+                    <div class="card-frame">
+                        <img src="/static/{{ photo.thumbnail_path }}" alt="{{ photo.title }}">
+                    </div>
+                    <div class="card-info">
+                        <h4>{{ photo.title }}</h4>
+                        <span class="meta-tag">DIM: {{ photo.width }}x{{ photo.height }}</span>
+                    </div>
+                </div>
+                {% else %}
+                <p class="no-data">NO MEDIA DETECTED ON STAGE. UPLOAD A FILE TO START THE RIG.</p>
+                {% endfor %}
+            </div>
+        </section>
+    </main>
+
+    <script src="/ui/js/main.js"></script>
+</body>
+</html>
