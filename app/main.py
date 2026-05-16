@@ -1,16 +1,21 @@
-# app/main.py
+import os
 from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from sqlalchemy import text
 
 from app.core.config import settings
-from app.core.database import engine, AsyncSessionLocal  # Añadimos AsyncSessionLocal
-from app.crud.crud_user import get_user_by_email, create_user  # Nuevo
-from app.schemas.user import UserCreate                       # Nuevo
+from app.core.database import engine, AsyncSessionLocal
+from app.crud.crud_user import get_user_by_email, create_user
+from app.schemas.user import UserCreate
+from app.api.v1 import api_router
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     print("🚀 Iniciando aplicación...")
+    
+    # Asegurar que existan las carpetas de almacenamiento local
+    os.makedirs("./uploads", exist_ok=True)
+    os.makedirs("./thumbnails", exist_ok=True)
     
     # Crear usuario administrador si no existe
     async with AsyncSessionLocal() as db:
@@ -45,6 +50,5 @@ async def root():
 async def health():
     return {"status": "healthy"}
 
-# Incluir el router de la API v1
-from app.api.v1 import api_router
+# Incluir el router centralizado de la API v1
 app.include_router(api_router, prefix="/api/v1")

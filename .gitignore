@@ -1,1 +1,23 @@
+.# Entornos virtuales y dependencias
+.venv/
+IPYNB_ checkpoints/
+poetry.lock
+
+# Carpetas de almacenamiento local (¡Muy Importante!)
+uploads/
+thumbnails/
+
+# Archivos de configuración con contraseñas reales
 .env
+
+# Caché de Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.pytest_cache/
+.mypy_cache/
+
+# Base de datos local (si se generan archivos sqlite de prueba)
+*.db
+*.sqlite3

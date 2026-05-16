@@ -9,6 +9,10 @@ from app.core.config import settings
 from app.crud.crud_user import get_user_by_email, create_user, authenticate_user
 from app.schemas.user import UserCreate, UserOut, Token, TokenData
 
+from app.api.v1.dependencies import get_current_user
+
+
+
 router = APIRouter(prefix="/auth", tags=["auth"])
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/api/v1/auth/login")

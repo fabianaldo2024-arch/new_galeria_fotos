@@ -7,14 +7,14 @@ class PhotoBase(BaseModel):
     title: str
     description: Optional[str] = None
     filename: str
-    file_path: str  # Podríamos ocultarlo en respuestas, pero de momento lo mostramos
+    file_path: str  
     width: Optional[int] = None
     height: Optional[int] = None
     file_size: Optional[int] = None
     album_id: UUID
 
 class PhotoCreate(PhotoBase):
-    pass  # En creación se requiere todo excepto los auto-generados
+    pass  
 
 class PhotoUpdate(BaseModel):
     title: Optional[str] = None
@@ -26,6 +26,7 @@ class PhotoOut(PhotoBase):
     thumbnail_path: Optional[str] = None
     created_at: datetime
     updated_at: datetime
-    owner_id: UUID  # Para saber quién la subió
+    owner_id: UUID  
 
-    model_config = dict(from_attributes=True)
+    class Config:
+        from_attributes = True
