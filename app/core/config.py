@@ -1,5 +1,16 @@
 from pydantic_settings import BaseSettings, SettingsConfigDict
 from pydantic import Field
+from pathlib import Path
+
+# Directorios base del proyecto (ajusta si tu app no está en la raíz)
+BASE_DIR = Path(__file__).resolve().parent.parent.parent  # sube desde app/core/ hasta la raíz
+
+UPLOAD_DIR = BASE_DIR / "uploads"
+THUMBNAIL_DIR = BASE_DIR / "thumbnails"
+
+# Asegurar que los directorios existen (opcional pero recomendado)
+UPLOAD_DIR.mkdir(parents=True, exist_ok=True)
+THUMBNAIL_DIR.mkdir(parents=True, exist_ok=True)
 
 class Settings(BaseSettings):
     # Configuración general de la aplicación
