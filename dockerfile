@@ -1,32 +1,44 @@
-# Dockerfile
-FROM python:3.11-slim
+# 1. Usamos una imagen ligera de Python 3.11 basada en Debian (compatible con Mint)
+FROM python:3.11-slim-bookworm
 
-WORKDIR /app
+# 2. Seteamos variables de entorno para Python y Poetry
+ENV PYTHONDONTWRITEBYTECODE=1 \
+    PYTHONUNBUFFERED=1 \
+    POETRY_VERSION=1.6.1 \
+    POETRY_VIRTUALENVS_CREATE=false \
+    POETRY_NO_INTERACTION=1
 
-# Instalar dependencias del sistema para Pillow y python-magic
-RUN apt-get update && apt-get install -y \
+# 3. Instalamos dependencias del sistema operativo
+# libmagic1 es CRUCIAL para que python-magic funcione [1, 2]
+# build-essential y libpq-dev son para compilar extensiones de DB si es necesario
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    build-essential \
     libmagic1 \
-    libgl1-mesa-glx \
-    libglib2.0-0 \
+    libpq-dev \
+    curl \
     && rm -rf /var/lib/apt/lists/*
 
-# Instalar Poetry
-RUN pip install poetry
+# 4. Instalamos Poetry en el contenedor
+RUN curl -sSL https://install.python-poetry.org | python3 -
+ENV PATH="/root/.local/bin:$PATH"
 
-# Copiar archivos de dependencias
-COPY pyproject.toml poetry.lock ./
+# 5. Creamos y seteamos el directorio de trabajo
+WORKDIR /app
 
-# Instalar dependencias sin crear entorno virtual (para que estén en el sistema)
-RUN poetry config virtualenvs.create false && poetry install --no-interaction --no-ansi
+# 6. Copiamos solo los archivos de dependencias primero (para aprovechar el cache de Docker) [3]
+COPY pyproject.toml poetry.lock* ./
 
-# Copiar el resto del código
+# 7. Instalamos las dependencias del proyecto
+RUN poetry install --no-root --only main
+
+# 8. Copiamos el resto del código de la aplicación
 COPY . .
 
-# Crear directorios para uploads y thumbnails
+# 9. Creamos las carpetas para uploads y thumbnails si no existen [2]
 RUN mkdir -p uploads thumbnails
 
-# Exponer puerto
+# 10. Exponemos el puerto que usa FastAPI
 EXPOSE 8000
 
-# Comando para ejecutar la app
+# 11. Comando para iniciar la app con Uvicorn [2]
 CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]

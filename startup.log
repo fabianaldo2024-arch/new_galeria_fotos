@@ -1,0 +1,2 @@
+No se ha encontrado la orden «uvicorn», pero se puede instalar con:
+sudo apt install uvicorn
