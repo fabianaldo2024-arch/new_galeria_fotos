@@ -1,9 +1,10 @@
+from app.core.config import settings  # ← esta línea debe estar
 from sqlalchemy.ext.asyncio import (
     AsyncSession,
     async_sessionmaker,
     create_async_engine,
 )
-from app.core.config import settings
+
 
 # El motor asíncrono se crea una vez (puede ser singleton a nivel módulo)
 engine = create_async_engine(
@@ -38,4 +39,3 @@ async def get_db() -> AsyncSession:
         finally:
             await session.close()
 
-from app.core.database import engine, AsyncSessionLocal

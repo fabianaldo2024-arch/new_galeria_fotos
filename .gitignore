@@ -1,23 +1,20 @@
-.# Entornos virtuales y dependencias
-.venv/
-IPYNB_ checkpoints/
-poetry.lock
-
-# Carpetas de almacenamiento local (¡Muy Importante!)
-uploads/
-thumbnails/
-
-# Archivos de configuración con contraseñas reales
+# Variables de entorno (NUNCA subir al repo)
 .env
 
-# Caché de Python
+# Python
 __pycache__/
 *.pyc
 *.pyo
-*.pyd
 .pytest_cache/
-.mypy_cache/
+*.egg-info/
 
-# Base de datos local (si se generan archivos sqlite de prueba)
-*.db
-*.sqlite3
+# Carpetas generadas por la app
+uploads/
+thumbnails/
+
+# Docker
+postgres_data/
+
+# Editor
+.vscode/
+.idea/
